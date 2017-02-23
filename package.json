@@ -1,0 +1,19 @@
+{
+  "name": "graphql-node",
+  "version": "1.0.0",
+  "description": "graphql-node playground",
+  "main": "index.js",
+  "scripts": {
+    "test": "say testing"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DavidHelgeson-minted/graphql-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DavidHelgeson-minted/graphql-node/issues"
+  },
+  "homepage": "https://github.com/DavidHelgeson-minted/graphql-node#readme"
+}
