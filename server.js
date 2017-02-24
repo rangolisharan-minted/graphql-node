@@ -1,32 +1,50 @@
-var express = require('express');
+var esGraphQL = require('elasticsearch-graphql');
+var graphql = require('graphql');
+var hitsSchema = require('./schema');
 var graphqlHTTP = require('express-graphql');
-var { buildSchema } = require('graphql');
 
-var schema = buildSchema(`
-	type Query{
-		hello: String
-		goodbye: String
-	}
-`);
+var express = require('express');
+var cors = require('cors');
 
-// The reoot provides a resolver function for each API endpoint
-
-var root = {
-	hello: () => {
-		return 'Hello world!';
-	},
-	goodbye: () => {
-		return 'Goodbye cruel world!';
-	}
-};
+var mapping = require('./mapping');
 
 var app = express();
-app.use('/graphql', graphqlHTTP({
-	schema: schema,
-	rootValue: root,
-	graphiql: true, // Automatically loads a Frontend tool for doing gql queries
+
+// Construct a schema, using GraphQL schema language
+var movieSearchSchema = esGraphQL({
+	graphql,
+	name: 'movieSearch',
+	mapping,
+	elastic: {
+		host: 'http://localhost:9200',
+		index: 'movies',
+		type: 'movie',
+		query: function(query, context) {
+			// debugger
+			console.log( query )
+			return query;
+		}
+	},
+	hitsSchema
+});
+
+app.use(cors());
+
+var graphqlMiddleware = graphqlHTTP( request => ({
+	context: request,
+  	graphiql: true,
+  	schema: new graphql.GraphQLSchema({
+  	  query: new graphql.GraphQLObjectType({
+  	    name: 'RootQueryType',
+  	    fields: {
+  	      movieSearch: movieSearchSchema
+  	    }
+  	  })
+  	})
 }));
+
+app.use('/graphql', graphqlMiddleware );
 
 app.listen(4000);
 
-console.log('Runng Graphql api server at localhost:4000/graphql');
+console.log('Running a new elasticsearch GraphQL API server at localhost:4000/graphql');
