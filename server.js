@@ -16,7 +16,7 @@ var movieSearchSchema = esGraphQL({
 	name: 'movieSearch',
 	mapping,
 	elastic: {
-		host: 'http://localhost:9200',
+		host: 'http://dockerhost:9200',
 		index: 'movies',
 		type: 'movie',
 		query: function(query, context) {
