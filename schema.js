@@ -1,4 +1,5 @@
 const graphql = require('graphql');
+const productSchema = require('./graphql-schema.js');
 
 // todo - get product JSON structure from url of elasticsearch result
 
@@ -35,20 +36,13 @@ module.exports = {
             return node._type;
           },
         },
-        // _source: {
-        //   type: new graphql.GraphQLObjectType({
-        //     name: 'SourceSchema',
-        //     description: 'Schema generated from JSON',
-        //     fields: fieldGenerator( example_product )
-        //   })
-        // }
-        // _source: composeSource( resolve )
-        // _source: {
-        //   type: graphql.GraphQLString,
-        //   resolve: function (node) {
-        //     return JSON.stringify(node._source);
-        //   }
-        // }
+        data: {
+          type: new graphql.GraphQLObjectType({
+            name: 'productDataSchema',
+            description: 'product data',
+            fields: productSchema,
+          }),
+        },
       };
     },
   })),

@@ -31,15 +31,13 @@ app.use(cors());
 
 const graphqlMiddleware = graphqlHTTP(request => ({
   context: request,
-  	graphiql: true,
-  	schema: new graphql.GraphQLSchema({
-  	  query: new graphql.GraphQLObjectType({
-  	    name: 'RootQueryType',
-  	    fields: {
-  	      productData: productDataSchema,
-  	    },
-  	  }),
-  	}),
+  graphiql: true,
+  schema: new graphql.GraphQLSchema({
+    query: new graphql.GraphQLObjectType({
+      name: 'RootQueryType',
+      fields: productDataSchema,
+    }),
+  }),
 }));
 
 app.use('/graphql', graphqlMiddleware);
