@@ -1,38 +1,55 @@
-var graphql = require('graphql')
+const graphql = require('graphql');
+
+// todo - get product JSON structure from url of elasticsearch result
 
 module.exports = {
-  resolve: function (res, params, data) {
-    console.log('Will fetch', res.hits.hits.map(function (hit) { return hit._id }).join(', '), 'from anywhere')
-    return new Promise(function (resolve, reject) {
-      resolve(res.hits.hits)
-    })
+  resolve(res, params, data) {
+    console.log('Will fetch', res.hits.hits.map(hit => hit._id).join(', '), 'from anywhere');
+    return new Promise((resolve, reject) => {
+      resolve(res.hits.hits);
+    });
   },
   args: {
   },
   type: new graphql.GraphQLList(new graphql.GraphQLObjectType({
-    name: 'ExampleSchema',
+    name: 'HitSchema',
     description: 'This is just an raw example schema',
-    fields: function () {
+    fields() {
+      console.log('fields test');
       return {
         id: {
           type: graphql.GraphQLString,
-          resolve: function (node) {
-            return node._id
-          }
+          resolve(node) {
+            return node._id;
+          },
         },
         index: {
           type: graphql.GraphQLString,
-          resolve: function (node) {
-            return node._index
-          }
+          resolve(node) {
+            return node._index;
+          },
         },
         type: {
           type: graphql.GraphQLString,
-          resolve: function (node) {
-            return node._type
-          }
-        }
-      }
-    }
-  }))
-}
+          resolve(node) {
+            return node._type;
+          },
+        },
+        // _source: {
+        //   type: new graphql.GraphQLObjectType({
+        //     name: 'SourceSchema',
+        //     description: 'Schema generated from JSON',
+        //     fields: fieldGenerator( example_product )
+        //   })
+        // }
+        // _source: composeSource( resolve )
+        // _source: {
+        //   type: graphql.GraphQLString,
+        //   resolve: function (node) {
+        //     return JSON.stringify(node._source);
+        //   }
+        // }
+      };
+    },
+  })),
+};

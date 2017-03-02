@@ -1,49 +1,48 @@
-var esGraphQL = require('elasticsearch-graphql');
-var graphql = require('graphql');
-var hitsSchema = require('./schema');
-var graphqlHTTP = require('express-graphql');
+const esGraphQL = require('dh-elasticsearch-graphql');
+const graphql = require('graphql');
+const hitsSchema = require('./schema');
+const graphqlHTTP = require('express-graphql');
 
-var express = require('express');
-var cors = require('cors');
+const express = require('express');
+const cors = require('cors');
 
-var mapping = require('./mapping');
+const mapping = require('./product-mapping-stripped.js');
 
-var app = express();
+const app = express();
 
 // Construct a schema, using GraphQL schema language
-var movieSearchSchema = esGraphQL({
-	graphql,
-	name: 'movieSearch',
-	mapping,
-	elastic: {
-		host: 'http://localhost:9200',
-		index: 'movies',
-		type: 'movie',
-		query: function(query, context) {
-			// debugger
-			console.log( query )
-			return query;
-		}
-	},
-	hitsSchema
+const productDataSchema = esGraphQL({
+  graphql,
+  name: 'productData',
+  mapping,
+  elastic: {
+    host: 'http://localhost:9200',
+    index: 'product',
+    type: 'product',
+    query(query, context) {
+      // debugger
+      return query;
+    },
+  },
+  hitsSchema,
 });
 
 app.use(cors());
 
-var graphqlMiddleware = graphqlHTTP( request => ({
-	context: request,
+const graphqlMiddleware = graphqlHTTP(request => ({
+  context: request,
   	graphiql: true,
   	schema: new graphql.GraphQLSchema({
   	  query: new graphql.GraphQLObjectType({
   	    name: 'RootQueryType',
   	    fields: {
-  	      movieSearch: movieSearchSchema
-  	    }
-  	  })
-  	})
+  	      productData: productDataSchema,
+  	    },
+  	  }),
+  	}),
 }));
 
-app.use('/graphql', graphqlMiddleware );
+app.use('/graphql', graphqlMiddleware);
 
 app.listen(4000);
 
