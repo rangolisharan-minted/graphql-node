@@ -32,14 +32,14 @@ module.exports = {
     images: [
       {
         image_type: 'profile_img_url',
-        caption: null,
-        message: null,
+        caption: 'null',
+        message: 'null',
         url: 'http://mintedcdn.dev.s3.amazonaws.com/files/content/designers/200_228754_56209f751b5c4.jpg',
       },
       {
         image_type: 'signature_img_url_artist',
-        caption: null,
-        message: null,
+        caption: 'null',
+        message: 'null',
         url: 'http://mintedcdn.dev.s3.amazonaws.com/files/content/designers/artist_signature/3035_18ba8c41b9964f28a6095f35695040b3.png',
       },
     ],
@@ -56,7 +56,10 @@ module.exports = {
     ],
     sku_group: 'main_holiday',
     special_feature: 'minted_select',
-    design: {},
+    design: {
+      id: 592198,
+      is_design_winner: true,
+    },
     first_photo_slot_dimensions: '375x519',
     og_title: '"Light Hearted" - Customizable Holiday Photo Cards in Red or White by Kaydi Bishop.',
     description: "Send out this year's holiday greetings with style. Your special photo will look great in these unique and modern holiday photo cards created for you by Minted's global community of independent designers. Don't have enough room on the front? Add a custom backer or interior to include even more photos and a more detailed message. If you have any questions or special requests for your card, please <a href=\"/feedback?subject=I have a question about Holiday Photo Cards\">email us</a>.<br>A full photo design personalized with a hand written style greeting: let your heart be light.",
@@ -128,13 +131,16 @@ module.exports = {
       'moveable',
     ],
     highlight: 'new_designs',
-    default_shipping_method: {},
+    default_shipping_method: {
+      displayName: 'Standard',
+      id: 1,
+    },
   },
   variants: [
     'MIN-HHS-HMC__v1:fc9c5fb7b927f5a752e16f4df12839f050556157',
     'MIN-3NB-HMC__v1:fdcb74449c86818e1e945e30eb1e21ca737aed80',
   ],
-  options: {},
+  options: '{}',
   skus: [
     'MIN-004-HYC',
     'MIN-L64-HYC',
