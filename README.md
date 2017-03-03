@@ -49,34 +49,10 @@ Step 3. Open a window in the browser to localhost:4000/graphql and enter in the 
   productData(query: "MIN-004-HYC",
     fields:[ "sku"] ){
     hits{
-      id
-      type
-      index
-    }
-    totalHits
-    aggregations{
-      artist{
-        lastName{
-          terms{
-            value
-          }
-        }
-      }
-      description{
-        hyc{
-          terms{
-            value
-          }
-        }
-      }
+      sku
+      skus
       attributes{
-        breadcrumbs{
-          label{
-            terms{
-              value
-            }
-          }
-        }
+        artist_user_id
       }
     }
   }

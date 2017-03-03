@@ -45,7 +45,7 @@ const graphqlMiddleware = graphqlHTTP(request => ({
 }));
 
 app.use('/graphql', graphqlMiddleware);
-app.use('/graphql', JSONparser);
+// app.use('/graphql', JSONparser);
 
 app.listen(4000);
 
