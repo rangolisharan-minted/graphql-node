@@ -23,7 +23,6 @@ const productDataSchema = esGraphQL({
     index: 'product',
     type: 'product',
     query(query, context) {
-      // debugger
       return query;
     },
   },

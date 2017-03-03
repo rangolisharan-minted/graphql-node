@@ -198,8 +198,8 @@ const ArtistType = new GraphQLObjectType({
     account_id: {
       description: 'enter your description',
       type: GraphQLInt,
-      resolve: function(n) {
-        console.log('acc id '+ n)  
+      resolve(n) {
+        console.log(`acc id ${n}`);
         return n;
       },
     },
@@ -227,7 +227,7 @@ const ArtistType = new GraphQLObjectType({
       description: 'enter your description',
       type: GraphQLString,
       resolve: n => n._source.artist.commission_request_url,
-    },  
+    },
     images: {
       description: 'enter your description',
       type: new GraphQLList(ImagesType),
@@ -242,11 +242,11 @@ const ArtistType = new GraphQLObjectType({
 });
 
 const FooType = new GraphQLObjectType({
-    name: 'FooType',
-    fields: {
-        bar: GraphQLString,
-        resolve: () => 'bar'
-    }
+  name: 'FooType',
+  fields: {
+    bar: GraphQLString,
+    resolve: () => 'bar',
+  },
 });
 
 const AttributesType = new GraphQLObjectType({
@@ -394,93 +394,75 @@ module.exports = new GraphQLObjectType({
       type: GraphQLString,
       resolve: n => JSON.stringify(n._source.description),
     },
-    // foo: new GraphQLObjectType({
-    //     name: 'FooType',
-    //     fields: ()=> ({
-    //         bar: {
-    //             type: GraphQLString,
-    //             resolve: () => 'bar'
-    //         }
-    //     }),
-    // }),
-    // artist: {
-    //     type: ArtistType,
-    // },
-        artist:{
+    artist: {
+      description: 'enter your description',
+      type: new GraphQLObjectType({
+        name: 'artist',
+        fields: {
+          is_minted_user: {
             description: 'enter your description',
-            type: new GraphQLObjectType({
-                name: 'artist',
-                fields: {
-                    is_minted_user: {
-                        description: 'enter your description',
-                        type: new GraphQLNonNull(GraphQLBoolean),
-                        resolve: (n) => n._source.artist["is_minted_user"],
-                    },
-                    first_name: {
-                        description: 'enter your description',
-                        type: GQLNonNullStringType,
-                        resolve: (n) => n._source.artist["first_name"],
-                    },
-                    last_name: {
-                        description: 'enter your description',
-                        type: GQLNonNullStringType,
-                        resolve: (n) => n._source.artist["last_name"],
-                    },
-                    user_id: {
-                        description: 'enter your description',
-                        type: new GraphQLNonNull(GraphQLInt),
-                        resolve: (n) => n._source.artist["user_id"],
-                    },
-                    account_id: {
-                        description: 'enter your description',
-                        type: GraphQLInt,
-                        resolve: n => n._source.artist["account_id"],
-                    },
-                    product_skus: {
-                        description: 'enter your description',
-                        type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
-                        resolve: (n) => n._source.artist["product_skus"],
-                    },
-                    url: {
-                        description: 'enter your description',
-                        type: GQLNonNullStringType,
-                        resolve: (n) => n._source.artist["url"],
-                    },
-                    philosophy: {
-                        description: 'enter your description',
-                        type: GQLNonNullStringType,
-                        resolve: (n) => n._source.artist["philosophy"],
-                    },
-                    location: {
-                        description: 'enter your description',
-                        type: new GraphQLNonNull(ArtistLocationType),
-                        resolve: (n) => n._source.artist["location"],
-                    },
-                    commission_request_url: {
-                        description: 'enter your description',
-                        type: GQLNonNullStringType,
-                        resolve: (n) => n._source.artist["commission_request_url"],
-                    },
-                    images: {
-                        description: 'enter your description',
-                        type: new GraphQLNonNull(new GraphQLList(ImagesType)),
-                        resolve: (n) => n._source.artist["images"],
-                    },
-                    name: {
-                        description: 'enter your description',
-                        type: GQLNonNullStringType,
-                        resolve: (n) => n._source.artist["name"],
-                    },
-                },
-            }),
-            resolve: function(n){
-                var val = Object.assign({},n._source.artist);
-                // console.log('artist resolve ', val )
-                // var val =  n._source.artist;
-                return n;
-            },
-            // resolve: (n) => n._source["artist"],
+            type: new GraphQLNonNull(GraphQLBoolean),
+            resolve: n => n._source.artist.is_minted_user,
+          },
+          first_name: {
+            description: 'enter your description',
+            type: GQLNonNullStringType,
+            resolve: n => n._source.artist.first_name,
+          },
+          last_name: {
+            description: 'enter your description',
+            type: GQLNonNullStringType,
+            resolve: n => n._source.artist.last_name,
+          },
+          user_id: {
+            description: 'enter your description',
+            type: new GraphQLNonNull(GraphQLInt),
+            resolve: n => n._source.artist.user_id,
+          },
+          account_id: {
+            description: 'enter your description',
+            type: GraphQLInt,
+            resolve: n => n._source.artist.account_id,
+          },
+          product_skus: {
+            description: 'enter your description',
+            type: new GraphQLNonNull(new GraphQLList(GraphQLString)),
+            resolve: n => n._source.artist.product_skus,
+          },
+          url: {
+            description: 'enter your description',
+            type: GQLNonNullStringType,
+            resolve: n => n._source.artist.url,
+          },
+          philosophy: {
+            description: 'enter your description',
+            type: GQLNonNullStringType,
+            resolve: n => n._source.artist.philosophy,
+          },
+          location: {
+            description: 'enter your description',
+            type: new GraphQLNonNull(ArtistLocationType),
+            resolve: n => n._source.artist.location,
+          },
+          commission_request_url: {
+            description: 'enter your description',
+            type: GQLNonNullStringType,
+            resolve: n => n._source.artist.commission_request_url,
+          },
+          images: {
+            description: 'enter your description',
+            type: new GraphQLNonNull(new GraphQLList(ImagesType)),
+            resolve: n => n._source.artist.images,
+          },
+          name: {
+            description: 'enter your description',
+            type: GQLNonNullStringType,
+            resolve: n => n._source.artist.name,
+          },
         },
+      }),
+      resolve: n => n,
+    },
     schema_version: {
       description: 'enter your description',
       type: new GraphQLNonNull(GraphQLInt),
