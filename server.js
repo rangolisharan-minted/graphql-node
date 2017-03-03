@@ -14,6 +14,7 @@ const app = express();
 const JSONparser = require('./json-parser.js');
 
 // Construct a schema, using GraphQL schema language
+
 const productDataSchema = esGraphQL({
   graphql,
   name: 'productData',
