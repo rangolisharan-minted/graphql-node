@@ -1,4 +1,4 @@
-const esGraphQL = require('dh-elasticsearch-graphql');
+const esGraphQL = require('elasticsearch-graphql');
 const graphql = require('graphql');
 const hitsSchema = require('./schema');
 const graphQLSchema = require('./graphql-schema.js');
