@@ -19,7 +19,7 @@
   "homepage": "https://github.com/DavidHelgeson-minted/graphql-node#readme",
   "dependencies": {
     "cors": "2.7.1",
-    "elasticsearch-graphql": "3.0.2",
+    "elasticsearch-graphql": "git://github.com/DavidHelgeson-minted/elasticsearch-graphql.git#9649746b9245f10b033717fbbd6289f63e32d9a2",
     "express": "4.13.3",
     "express-graphql": "0.5.3",
     "graphql": "0.6.2",
