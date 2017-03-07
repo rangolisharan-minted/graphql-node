@@ -1,0 +1,19 @@
+## Copyright (C) 2017 Minted LLC
+## All Rights Reserved
+
+
+# Please keep the keys in lexical ordering
+graphql:
+  # command: node_modules/.bin/nodemon server.js
+  volumes:
+    - ..:/home/app/graphql
+    - /home/app/graphql/node_modules
+  environment:
+    ELASTICSEARCH_HOST: $DOCKERHOST
+    ELASTICSEARCH_PORT: 9200
+    LOG: debug
+    NODE_ENV: dev
+  extra_hosts:
+    - "dockerhost:$DOCKERHOST"
+  ports:
+    - '4000:4000'

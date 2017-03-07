@@ -1,0 +1,8 @@
+## Copyright (C) 2017 Minted LLC
+## All Rights Reserved
+
+
+# Please keep the keys in lexical ordering
+graphql:
+  build: ..
+  dockerfile: docker/Dockerfile

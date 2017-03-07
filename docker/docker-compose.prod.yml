@@ -1,0 +1,12 @@
+## Copyright (C) 2017 Minted LLC
+## All Rights Reserved
+
+# Please keep the keys in lexical ordering
+graphql:
+  environment:
+    ELASTICSEARCH_HOST: http://indra-es.dfw.minted.com
+    ELASTICSEARCH_PORT: 9200
+    LOG: error
+    NODE_ENV: prod
+  ports:
+    - '4000:4000'
