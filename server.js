@@ -8,6 +8,8 @@ const mapping = require('./product/product-mapping-stripped.js');
 const express = require('express');
 const cors = require('cors');
 
+const interceptor = require('express-interceptor');
+
 const app = express();
 
 const port = 4000;
@@ -44,13 +46,49 @@ const graphqlMiddleware = graphqlHTTP(request => ({
   }),
 }));
 
+const interceptorJSON = interceptor( function(req, res, next){
 
-app.use('/graphql', graphqlMiddleware, function(a,b,c){
+  return {
+    isInterceptable() {
+      return req.headers.accept.toLowerCase().indexOf('application/json') > -1;
+    },
 
-  console.log(a, b, c);
+    intercept(body, send) {
+      console.log('intercepting')
+      var _body = JSON.parse(body);
+      console.log(_body.data.productData.hits);
+
+      _body.data.productData.hits.forEach(function(hit){
+        console.log(hit)
+        try {
+          hit.default_variant = JSON.parse( hit.default_variant );
+        } catch (e) {
+          throw (e);
+        }
+        try {
+          hit.options = JSON.parse( hit.options );
+        } catch (e){
+          throw(e);
+        }
+        try {
+          hit.description = JSON.parse( hit.description );
+        } catch (e) {
+          throw(e);
+        }
+      });
+
+      var strBody = JSON.stringify(_body);
+
+      send( strBody );
+
+    },
+  };
 
 });
-// app.use('/graphql', JSONparser);
+
+app.use( interceptorJSON );
+
+app.use('/graphql', graphqlMiddleware);
 
 app.listen( port );
 
