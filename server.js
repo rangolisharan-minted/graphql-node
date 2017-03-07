@@ -1,17 +1,16 @@
 const esGraphQL = require('elasticsearch-graphql');
 const graphql = require('graphql');
 const hitsSchema = require('./schema');
-const graphQLSchema = require('./graphql-schema.js');
 const graphqlHTTP = require('express-graphql');
+
+const mapping = require('./product/product-mapping-stripped.js');
 
 const express = require('express');
 const cors = require('cors');
 
-const mapping = require('./product-mapping-stripped.js');
-
 const app = express();
 
-const JSONparser = require('./json-parser.js');
+const port = 4000;
 
 // Construct a schema, using GraphQL schema language
 
@@ -45,9 +44,14 @@ const graphqlMiddleware = graphqlHTTP(request => ({
   }),
 }));
 
-app.use('/graphql', graphqlMiddleware);
+
+app.use('/graphql', graphqlMiddleware, function(a,b,c){
+
+  console.log(a, b, c);
+
+});
 // app.use('/graphql', JSONparser);
 
-app.listen(4000);
+app.listen( port );
 
-console.log('Running a new elasticsearch GraphQL API server at localhost:4000/graphql');
+console.log('Running a new elasticsearch GraphQL API server at localhost:' + port + '/graphql');

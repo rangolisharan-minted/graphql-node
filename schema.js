@@ -1,5 +1,5 @@
 const graphql = require('graphql');
-const productSchema = require('./graphql-schema.js');
+const productSchema = require('./product/graphql-schema-product.js');
 
 module.exports = {
   resolve(res, params, data) {
