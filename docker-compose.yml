@@ -1,9 +1,0 @@
-graphql:
-  build: .
-  ports:
-    - '4000:4000'
-  volumes:
-    - .:/home/app/graphql
-    - /home/app/graphql/node_modules
-  extra_hosts:
-    - "dockerhost:$DOCKERHOST"

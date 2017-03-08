@@ -13,13 +13,19 @@ const JSONinterceptor = require('./src/tools/json-interceptor.js');
 const app = express();
 
 const port = 4000;
+const JSONparser = require('./json-parser.js');
 
+const elasticSearchHost = process.env.ELASTICSEARCH_HOST ? 
+ 'http://' + process.env.ELASTICSEARCH_HOST + ':' + process.env.ELASTICSEARCH_PORT
+ : 'http://localhost:9200' 
+
+// Construct a schema, using GraphQL schema language
 const productDataSchema = esGraphQL({
   graphql,
   name: 'productData',
   mapping,
   elastic: {
-    host: 'http://localhost:9200',
+    host: elasticSearchHost,
     index: 'product',
     type: 'product',
     query(query) {
