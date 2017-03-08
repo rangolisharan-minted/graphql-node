@@ -500,11 +500,7 @@ module.exports = new GraphQLObjectType({
     default_variant: {
       description: 'enter your description',
       type: GraphQLString,
-      resolve: function (n) {
-        console.log('deafault variant ',n._source.default_variant.length)
-        return JSON.stringify( n._source.default_variant );
-      }
-      // resolve: n => JSON.stringify( n._source.default_variant ),
+      resolve: n => JSON.stringify(n._source.default_variant),
     },
   },
 });
