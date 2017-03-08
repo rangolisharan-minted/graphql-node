@@ -1,50 +1,89 @@
-var esGraphQL = require('elasticsearch-graphql');
-var graphql = require('graphql');
-var hitsSchema = require('./schema');
-var graphqlHTTP = require('express-graphql');
+const esGraphQL = require('elasticsearch-graphql');
+const graphql = require('graphql');
+const hitsSchema = require('./src/hits-schema.js');
+const graphqlHTTP = require('express-graphql');
 
-var express = require('express');
-var cors = require('cors');
+const mapping = require('./src/product/product-mapping-stripped.js');
 
-var mapping = require('./mapping');
+const request = require('request');
+const express = require('express');
+const cors = require('cors');
 
-var app = express();
+const JSONinterceptor = require('./src/tools/json-interceptor.js');
 
+const app = express();
+
+const port = 4000;
+
+const elasticSearchHost = process.env.ELASTICSEARCH_HOST ? 
+ 'http://' + process.env.ELASTICSEARCH_HOST + ':' + process.env.ELASTICSEARCH_PORT
+ : 'http://localhost:9200';
 // Construct a schema, using GraphQL schema language
-var movieSearchSchema = esGraphQL({
-	graphql,
-	name: 'movieSearch',
-	mapping,
-	elastic: {
-		host: 'http://localhost:9200',
-		index: 'movies',
-		type: 'movie',
-		query: function(query, context) {
-			// debugger
-			console.log( query )
-			return query;
-		}
-	},
-	hitsSchema
-});
 
-app.use(cors());
+const esCallback = function( body ){
 
-var graphqlMiddleware = graphqlHTTP( request => ({
-	context: request,
-  	graphiql: true,
-  	schema: new graphql.GraphQLSchema({
-  	  query: new graphql.GraphQLObjectType({
-  	    name: 'RootQueryType',
-  	    fields: {
-  	      movieSearch: movieSearchSchema
-  	    }
-  	  })
-  	})
+  const hit = body.hits.hits[0];
+
+  return new Promise(function(resolve, reject){
+
+    if(!hit._source.variants.length){
+      resolve(body);
+      return;
+    }
+
+    const defaultVariantId = hit._source.variants[0];
+
+    request.get({
+      uri: [ elasticSearchHost, 'variant', 'variant', defaultVariantId].join('/'),
+      json: true,
+    }, function( err, res, variant ){
+
+      if(err) return reject(err)
+      if(variant.error) return reject(variant.error.reason)
+
+      hit._source.default_variant = variant._source;
+
+      return resolve(body);
+
+    });
+
+  });
+};
+
+const productDataSchema = esGraphQL({
+  graphql,
+  name: 'productData',
+  _source: true,
+  mapping,
+  hitsSchema,
+  elastic: {
+    host: elasticSearchHost,
+    index: 'product',
+    type: 'product',
+    query(query) {
+      return query;
+    },
+  },
+  esCallback
+})
+
+const graphqlMiddleware = graphqlHTTP(request => ({
+  context: request,
+  graphiql: true, // toggles GUI on /graphql
+  schema: new graphql.GraphQLSchema({
+    query: new graphql.GraphQLObjectType({
+      name: 'RootQueryType',
+      fields: {
+        productData: productDataSchema,
+      },
+    }),
+  }),
 }));
 
-app.use('/graphql', graphqlMiddleware );
+app.use(cors());
+app.use(JSONinterceptor);
+app.use('/graphql', graphqlMiddleware);
 
-app.listen(4000);
+app.listen(port);
 
-console.log('Running a new elasticsearch GraphQL API server at localhost:4000/graphql');
+console.log(`Running a new elasticsearch GraphQL API server at localhost:${port}/graphql`);
