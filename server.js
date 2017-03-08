@@ -13,6 +13,9 @@ const app = express();
 
 const JSONparser = require('./json-parser.js');
 
+const elasticSearchHost = process.env.ELASTICSEARCH_HOST ? 
+ 'http://' + process.env.ELASTICSEARCH_HOST + ':' + process.env.ELASTICSEARCH_PORT
+ : 'http://localhost:9200' 
 // Construct a schema, using GraphQL schema language
 
 const productDataSchema = esGraphQL({
@@ -20,7 +23,7 @@ const productDataSchema = esGraphQL({
   name: 'productData',
   mapping,
   elastic: {
-    host: 'http://localhost:9200',
+    host: elasticSearchHost,
     index: 'product',
     type: 'product',
     query(query, context) {

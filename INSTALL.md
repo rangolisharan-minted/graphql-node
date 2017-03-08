@@ -11,15 +11,23 @@
 3. You have docker installed. This comes with latest boxen. So update it if your laptop was IT provisioned a long time ago.
 
 # Install & Launch 
-1. Run the following command to build a Docker image locally:
+1. Make sure that the docker_start.sh and build.sh scripts are executable:
 ```
-#> docker-compose build
+#> chmod +x docker_build.sh
+#> chmod +x docker_start.sh
 ```
-2. Make sure that graphql_start.sh is executable:
+3. Run the following command to build your docker container:
 ```
-#> chmod +x start.sh 
+#> ./docker_build.sh
 ```
-3. Run the following command to bring up your docker container and launch the GraphQL service:
-```
-#> ./start.sh
-```
+4. Run the following commant to launch the container and start the GraphQL service
+#> ./docker_start.sh
+
+# Reflecting changes in the container as you make them:
+1. Source changes should be hot reloaded.
+2. If you make changes to Dockerfile or docker-compose.yml, then you must re-build and re-start.
+3. If you make changes in package.json, or need to run npm install, then ..TODO..
+
+# Helpful commands
+1. To get to a bash console in the container with appropriate variables set:
+#> ./docker_bash.sh (You should make this an executable as well)
