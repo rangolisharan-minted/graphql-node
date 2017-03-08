@@ -1,23 +1,25 @@
 const esGraphQL = require('elasticsearch-graphql');
 const graphql = require('graphql');
-const hitsSchema = require('./schema');
-const graphQLSchema = require('./graphql-schema.js');
+const hitsSchema = require('./src/hits-schema.js');
 const graphqlHTTP = require('express-graphql');
+
+const mapping = require('./src/product/product-mapping-stripped.js');
 
 const express = require('express');
 const cors = require('cors');
 
-const mapping = require('./product-mapping-stripped.js');
+const JSONinterceptor = require('./src/tools/json-interceptor.js');
 
 const app = express();
 
+const port = 4000;
 const JSONparser = require('./json-parser.js');
 
 const elasticSearchHost = process.env.ELASTICSEARCH_HOST ? 
  'http://' + process.env.ELASTICSEARCH_HOST + ':' + process.env.ELASTICSEARCH_PORT
  : 'http://localhost:9200' 
-// Construct a schema, using GraphQL schema language
 
+// Construct a schema, using GraphQL schema language
 const productDataSchema = esGraphQL({
   graphql,
   name: 'productData',
@@ -26,18 +28,16 @@ const productDataSchema = esGraphQL({
     host: elasticSearchHost,
     index: 'product',
     type: 'product',
-    query(query, context) {
+    query(query) {
       return query;
     },
   },
   hitsSchema,
 });
 
-app.use(cors());
-
 const graphqlMiddleware = graphqlHTTP(request => ({
   context: request,
-  graphiql: true,
+  graphiql: true, // toggles GUI on /graphql
   schema: new graphql.GraphQLSchema({
     query: new graphql.GraphQLObjectType({
       name: 'RootQueryType',
@@ -48,9 +48,10 @@ const graphqlMiddleware = graphqlHTTP(request => ({
   }),
 }));
 
+app.use(cors());
+app.use(JSONinterceptor);
 app.use('/graphql', graphqlMiddleware);
-// app.use('/graphql', JSONparser);
 
-app.listen(4000);
+app.listen(port);
 
-console.log('Running a new elasticsearch GraphQL API server at localhost:4000/graphql');
+console.log(`Running a new elasticsearch GraphQL API server at localhost:${port}/graphql`);

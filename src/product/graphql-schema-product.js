@@ -198,10 +198,7 @@ const ArtistType = new GraphQLObjectType({
     account_id: {
       description: 'enter your description',
       type: GraphQLInt,
-      resolve(n) {
-        console.log(`acc id ${n}`);
-        return n;
-      },
+      resolve: n => n._source.artist.account_id,
     },
     product_skus: {
       description: 'enter your description',
@@ -238,14 +235,6 @@ const ArtistType = new GraphQLObjectType({
       type: GraphQLString,
       resolve: n => n._source.artist.name,
     },
-  },
-});
-
-const FooType = new GraphQLObjectType({
-  name: 'FooType',
-  fields: {
-    bar: GraphQLString,
-    resolve: () => 'bar',
   },
 });
 
@@ -507,6 +496,11 @@ module.exports = new GraphQLObjectType({
       description: 'enter your description',
       type: new GraphQLNonNull(new GraphQLList(OptionRelationshipsType)),
       resolve: n => n._source.option_relationships,
+    },
+    default_variant: {
+      description: 'enter your description',
+      type: GraphQLString,
+      resolve: n => JSON.stringify(n._source.default_variant),
     },
   },
 });

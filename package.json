@@ -1,7 +1,7 @@
 {
   "name": "graphql-node",
-  "version": "1.0.0",
-  "description": "graphql-node playground",
+  "version": "0.2.0",
+  "description": "graphql-node implementation",
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
@@ -11,19 +11,19 @@
     "type": "git",
     "url": "git+https://github.com/DavidHelgeson-minted/graphql-node.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "DavidHelgeson-minted",
+  "license": "",
   "bugs": {
     "url": "https://github.com/DavidHelgeson-minted/graphql-node/issues"
   },
   "homepage": "https://github.com/DavidHelgeson-minted/graphql-node#readme",
   "dependencies": {
     "cors": "2.7.1",
-    "elasticsearch-graphql": "git://github.com/DavidHelgeson-minted/elasticsearch-graphql.git#9649746b9245f10b033717fbbd6289f63e32d9a2",
+    "elasticsearch-graphql": "git+ssh://github.com/DavidHelgeson-minted/elasticsearch-graphql.git#67210e52e7a01ba5be036ba5fa1c6ea2e414077d",
     "express": "4.13.3",
     "express-graphql": "0.5.3",
-    "graphql": "0.6.2",
-    "json-to-graphql": "^0.1.1"
+    "express-interceptor": "1.2.0",
+    "graphql": "0.6.2"
   },
   "devDependencies": {
     "eslint": "3.11.1",
