@@ -17,6 +17,7 @@ module.exports = interceptor(req =>
 
        objBody.data.productData.hits.forEach((hit) => {
          stringifiedGraphqlProps.forEach((propVal) => {
+           if (!hit[propVal]) return;
            try {
              hit[propVal] = JSON.parse(hit[propVal]);
            } catch (e) {
